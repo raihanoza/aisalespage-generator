@@ -100,15 +100,6 @@ export default function Login({
                     >
                         Don't have an account?
                     </Link>
-
-                    {canResetPassword && (
-                        <Link
-                            href={route("password.request")}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
                 </div>
             </form>
         </GuestLayout>
