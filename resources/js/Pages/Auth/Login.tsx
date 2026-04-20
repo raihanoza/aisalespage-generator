@@ -90,7 +90,10 @@ export default function Login({
                     </label>
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
+                <div className="mt-8 flex flex-col gap-1">
+                    <PrimaryButton className="w-fit" disabled={processing}>
+                        Log in
+                    </PrimaryButton>
                     <Link
                         href={route("register")}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mr-4"
@@ -106,10 +109,6 @@ export default function Login({
                             Forgot your password?
                         </Link>
                     )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
                 </div>
             </form>
         </GuestLayout>
