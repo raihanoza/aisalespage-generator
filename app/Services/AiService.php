@@ -165,8 +165,32 @@ PROMPT;
     {
         return match ($this->provider) {
             'gemini' => $this->callGemini($prompt),
+            'groq'   => $this->callGroq($prompt),
             default  => $this->callOpenAI($prompt),
         };
+    }
+
+    private function callGroq(string $prompt): string
+    {
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer {$this->apiKey}",
+            'Content-Type'  => 'application/json',
+        ])->timeout(60)->post('https://api.groq.com/openai/v1/chat/completions', [
+            'model'       => $this->model,
+            'messages'    => [
+                ['role' => 'system', 'content' => 'You are an expert sales copywriter. Always respond with valid JSON only. No markdown fences, no explanation, just pure JSON.'],
+                ['role' => 'user',   'content' => $prompt],
+            ],
+            'temperature'      => 0.7,
+            'max_tokens'       => 3000,
+            'response_format'  => ['type' => 'json_object'],
+        ]);
+
+        if ($response->failed()) {
+            throw new Exception('Groq API error: ' . $response->body());
+        }
+
+        return $response->json('choices.0.message.content', '{}');
     }
 
     private function callOpenAI(string $prompt): string

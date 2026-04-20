@@ -6,7 +6,7 @@ return [
     | AI Provider Configuration
     |--------------------------------------------------------------------------
     |
-    | Supported providers: "openai", "gemini"
+    | Supported providers: "openai", "gemini", "groq"
     |
     */
 
@@ -14,7 +14,9 @@ return [
 
     'model' => env('AI_MODEL', 'gemini-2.5-flash'),
 
-    'api_key' => env('AI_PROVIDER', 'openai') === 'gemini'
-        ? env('GEMINI_API_KEY')
-        : env('OPENAI_API_KEY'),
+    'api_key' => match(env('AI_PROVIDER', 'gemini')) {
+        'gemini' => env('GEMINI_API_KEY'),
+        'groq' => env('GROQ_API_KEY'),
+        default => env('GEMINI_API_KEY'),
+    },
 ];
